@@ -35,7 +35,8 @@
 #include <cstdio>
 #include <cwchar>
 
-namespace formatxx::_detail {
+namespace formatxx {
+namespace _detail {
 
 	inline int float_helper(char* buf, int result, char const* fmt, int width, int precision, double value) noexcept {
 		return std::snprintf(buf, result, fmt, width, precision, value);
@@ -107,6 +108,6 @@ namespace formatxx::_detail {
 		}
 	}
 
-} // namespace formatxx::_detail
+}} // namespace formatxx::_detail
 
 #endif // _guard_FORMATXX_DETAIL_WRITE_FLOAT_H

@@ -47,7 +47,7 @@ set(FORMATXX_TESTS
 set(FORMATXX_FILES ${FORMATXX_PUBLIC_HEADERS} ${FORMATXX_PRIVATE_HEADERS} ${FORMATXX_SOURCES})
 
 add_library(formatxx ${FORMATXX_FILES})
-target_compile_features(formatxx PUBLIC cxx_std_17)
+target_compile_features(formatxx PUBLIC cxx_std_14)
 target_include_directories(formatxx PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/formatxx>

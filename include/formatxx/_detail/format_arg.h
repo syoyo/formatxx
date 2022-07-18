@@ -1,7 +1,7 @@
 // distribute this software, either in source code form or as a compiled
 // binary, for any purpose, commercial or non - commercial, and by any
 // means.
-// 
+//
 // In jurisdictions that recognize copyright laws, the author or authors
 // of this software dedicate any and all copyright interest in the
 // software to the public domain. We make this dedication for the benefit
@@ -9,7 +9,7 @@
 // successors. We intend this dedication to be an overt act of
 // relinquishment in perpetuity of all present and future rights to this
 // software under copyright law.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -17,7 +17,7 @@
 // OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-// 
+//
 // For more information, please refer to <http://unlicense.org/>
 //
 // Authors:
@@ -29,14 +29,15 @@
 
 #include <initializer_list>
 
-namespace formatxx::_detail {
+namespace formatxx {
+namespace _detail {
     enum class format_arg_type;
 
     template <typename CharT> class basic_format_arg;
     template <typename CharT> class basic_format_arg_list;
 
     template <typename CharT, typename T> constexpr basic_format_arg<CharT> make_format_arg(T const& value) noexcept;
-}
+}}
 
 enum class formatxx::_detail::format_arg_type {
     unknown,
@@ -100,9 +101,19 @@ private:
     size_type _count = 0;
 };
 
-namespace formatxx::_detail {
+namespace formatxx{
+namespace _detail {
+
+    template <class... Types>
+    struct VoidTester {
+      using type = void;
+    };
+
+    template <class... Types>
+    using void_t = typename VoidTester<Types...>::type;
+
     template <typename T>
-    using decay_array_t = std::conditional_t<std::is_array_v<T>, std::remove_extent_t<T> const*, T>;
+    using decay_array_t = std::conditional_t<std::is_array<T>::value, std::remove_extent_t<T> const*, T>;
 
     template <typename T>
     using formattable_t = decay_array_t<std::remove_reference_t<T>>;
@@ -110,7 +121,7 @@ namespace formatxx::_detail {
     template <typename C, typename T, typename V = void>
     struct has_format_value { static constexpr bool value = false; };
     template <typename C, typename T>
-    struct has_format_value<C, T, std::void_t<decltype(format_value(std::declval<basic_format_writer<C>&>(), std::declval<T>(), std::declval<basic_format_options<C>>()))>> {
+    struct has_format_value<C, T, void_t<decltype(format_value(std::declval<basic_format_writer<C>&>(), std::declval<T>(), std::declval<basic_format_options<C>>()))>> {
         static constexpr bool value = true;
     };
 
@@ -146,6 +157,7 @@ namespace formatxx::_detail {
         return result_code::success;
     }
 
+#if 1 // TODO: Rewrite if constexpr to compile correctly with C++14 compiler
     template <typename CharT, typename T>
     constexpr basic_format_arg<CharT> make_format_arg(T const& value) noexcept {
         constexpr format_arg_type type = type_of<T>::value;
@@ -156,16 +168,17 @@ namespace formatxx::_detail {
         else if constexpr (has_format_value<CharT, T>::value) {
             return basic_format_arg<CharT>(&format_value_thunk<CharT, T>, &value);
         }
-        else if constexpr (std::is_pointer_v<T>) {
+        else if constexpr (std::is_pointer<T>::value) {
             return { format_arg_type::void_pointer, &value };
         }
-        else if constexpr (std::is_enum_v<T>) {
+        else if constexpr (std::is_enum<T>::value) {
             return { type_of<std::underlying_type_t<T>>::value, &value };
         }
         else {
             return {};
         }
     }
-}
+#endif
+}}
 
 #endif // !defined(_guard_FORMATXX_DETAIL_FORMAT_ARG_H)

@@ -36,7 +36,8 @@
 #include <cstdlib>
 #include <climits>
 
-namespace formatxx::_detail {
+namespace formatxx {
+namespace _detail {
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -83,7 +84,7 @@ namespace formatxx::_detail {
         }
     }
 
-} // namespace formatx::_detail
+}} // namespace formatx::_detail
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)

@@ -1,7 +1,7 @@
 // distribute this software, either in source code form or as a compiled
 // binary, for any purpose, commercial or non - commercial, and by any
 // means.
-// 
+//
 // In jurisdictions that recognize copyright laws, the author or authors
 // of this software dedicate any and all copyright interest in the
 // software to the public domain. We make this dedication for the benefit
@@ -9,7 +9,7 @@
 // successors. We intend this dedication to be an overt act of
 // relinquishment in perpetuity of all present and future rights to this
 // software under copyright law.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -17,7 +17,7 @@
 // OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-// 
+//
 // For more information, please refer to <http://unlicense.org/>
 //
 // Authors:
@@ -38,6 +38,8 @@
 template <typename CharT>
 formatxx::result_code FORMATXX_API formatxx::_detail::basic_format_arg<CharT>::format_into(basic_format_writer<CharT>& output, basic_format_options<CharT> const& options) const {
     switch (_type) {
+    case _detail::format_arg_type::unknown:
+        return result_code::success;
     case _detail::format_arg_type::char_t:
         _detail::write_char(output, *static_cast<char const*>(_value), options);
         return result_code::success;
@@ -97,8 +99,8 @@ formatxx::result_code FORMATXX_API formatxx::_detail::basic_format_arg<CharT>::f
 		return result_code::success;
     case _detail::format_arg_type::custom:
         return _thunk(output, _value, options);
-    default:
-        return result_code::success;
+    //default:
+    //    return result_code::success;
     }
 }
 

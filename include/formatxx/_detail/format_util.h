@@ -32,7 +32,8 @@
 #define _guard_FORMATXX_DETAIL_FORMAT_UTIL_H
 #pragma once
 
-namespace formatxx::_detail {
+namespace formatxx {
+namespace _detail {
 
 	template <typename CharT>
 	constexpr void write_padding(basic_format_writer<CharT>& out, CharT pad_char, std::size_t count) {
@@ -85,6 +86,6 @@ namespace formatxx::_detail {
 		return false;
 	}
 
-} // namespace formatxx::_detail
+}} // namespace formatxx::_detail
 
 #endif // _guard_FORMATXX_DETAIL_FORMAT_UTIL_H

@@ -32,7 +32,8 @@
 #define _guard_FORMATXX_DETAIL_PARSE_UNSIGNED_H
 #pragma once
 
-namespace formatxx::_detail {
+namespace formatxx {
+namespace _detail {
 
 	template <typename CharT>
 	static constexpr CharT const* parse_unsigned(CharT const* start, CharT const* end, unsigned& result) noexcept {
@@ -45,6 +46,6 @@ namespace formatxx::_detail {
 		return start;
 	}
 
-} // namespace formatxx::_detail
+}} // namespace formatxx::_detail
 
 #endif // _guard_FORMATXX_DETAIL_PARSE_UNSIGNED_H

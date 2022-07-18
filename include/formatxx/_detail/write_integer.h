@@ -1,12 +1,12 @@
 // formatxx - C++ string formatting library.
 //
 // This is free and unencumbered software released into the public domain.
-// 
+//
 // Anyone is free to copy, modify, publish, use, compile, sell, or
 // distribute this software, either in source code form or as a compiled
 // binary, for any purpose, commercial or non - commercial, and by any
 // means.
-// 
+//
 // In jurisdictions that recognize copyright laws, the author or authors
 // of this software dedicate any and all copyright interest in the
 // software to the public domain. We make this dedication for the benefit
@@ -14,7 +14,7 @@
 // successors. We intend this dedication to be an overt act of
 // relinquishment in perpetuity of all present and future rights to this
 // software under copyright law.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -22,7 +22,7 @@
 // OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-// 
+//
 // For more information, please refer to <http://unlicense.org/>
 //
 // Authors:
@@ -37,7 +37,8 @@
 #include <limits>
 #include <climits>
 
-namespace formatxx::_detail {
+namespace formatxx {
+namespace _detail {
 
 	template <typename CharT, typename T>
     constexpr void write_integer(basic_format_writer<CharT>& out, T value, basic_format_options<CharT> const& options);
@@ -75,7 +76,7 @@ namespace formatxx::_detail {
 	};
 
 	struct decimal_helper {
-		// buffer must be one larger than digits10, as that trait is the maximum number of 
+		// buffer must be one larger than digits10, as that trait is the maximum number of
 		// base-10 digits represented by the type in their entirety, e.g. 8-bits can store
 		// 99 but not 999, so its digits10 is 2, even though the value 255 could be stored
 		// and has 3 digits.
@@ -255,6 +256,6 @@ namespace formatxx::_detail {
 		}
 	}
 
-} // namespace formatxx::_detail
+}} // namespace formatxx::_detail
 
 #endif // _guard_FORMATXX_DETAIL_WRITE_INTEGER_H

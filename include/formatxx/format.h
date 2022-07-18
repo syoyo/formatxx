@@ -1,12 +1,12 @@
 // formatxx - C++ string formatting library.
 //
 // This is free and unencumbered software released into the public domain.
-// 
+//
 // Anyone is free to copy, modify, publish, use, compile, sell, or
 // distribute this software, either in source code form or as a compiled
 // binary, for any purpose, commercial or non - commercial, and by any
 // means.
-// 
+//
 // In jurisdictions that recognize copyright laws, the author or authors
 // of this software dedicate any and all copyright interest in the
 // software to the public domain. We make this dedication for the benefit
@@ -14,7 +14,7 @@
 // successors. We intend this dedication to be an overt act of
 // relinquishment in perpetuity of all present and future rights to this
 // software under copyright law.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -22,7 +22,7 @@
 // OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 // ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-// 
+//
 // For more information, please refer to <http://unlicense.org/>
 //
 // Authors:
@@ -33,7 +33,7 @@
 #pragma once
 
 #include <type_traits>
-#include <litexx/string_view.h>
+#include "litexx/string_view.h"
 
 #if !defined(FORMATXX_API)
 #	if defined(_WIN32)
@@ -155,12 +155,13 @@ namespace formatxx {
 }
 
 /// @internal
-namespace formatxx::_detail {
+namespace formatxx {
+namespace _detail {
     template <typename CharT>
     FORMATXX_PUBLIC result_code FORMATXX_API format_impl(basic_format_writer<CharT>& out, basic_string_view<CharT> format, basic_format_arg_list<CharT> args);
     template <typename CharT>
     FORMATXX_PUBLIC result_code FORMATXX_API printf_impl(basic_format_writer<CharT>& out, basic_string_view<CharT> format, basic_format_arg_list<CharT> args);
-}
+}}
 
 extern template FORMATXX_PUBLIC formatxx::result_code FORMATXX_API formatxx::_detail::format_impl(basic_format_writer<char>& out, basic_string_view<char> format, basic_format_arg_list<char> args);
 extern template FORMATXX_PUBLIC formatxx::result_code FORMATXX_API formatxx::_detail::printf_impl(basic_format_writer<char>& out, basic_string_view<char> format, basic_format_arg_list<char> args);
@@ -202,7 +203,7 @@ template <typename ResultT, typename FormatT, typename... Args>
 constexpr ResultT formatxx::format_as(FormatT const& format, Args const& ... args) {
     using char_type = typename ResultT::value_type;
     ResultT result;
-    append_writer writer(result);
+    append_writer<ResultT> writer(result);
     _detail::format_impl(writer, basic_string_view<char_type>(format), { _detail::make_format_arg<char_type, _detail::formattable_t<Args>>(args)... });
     return result;
 }
@@ -215,7 +216,7 @@ template <typename ResultT, typename FormatT, typename... Args>
 constexpr ResultT formatxx::printf_as(FormatT const& format, Args const& ... args) {
     using char_type = typename ResultT::value_type;
     ResultT result;
-    append_writer writer(result);
+    append_writer<ResultT> writer(result);
     _detail::printf_impl(writer, basic_string_view<char_type>(format), { _detail::make_format_arg<char_type, _detail::formattable_t<Args>>(args)... });
     return result;
 }
